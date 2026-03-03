@@ -1,0 +1,87 @@
+#! /usr/bin/vvp
+:ivl_version "11.0 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/system.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_sys.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/vhdl_textio.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/v2005_math.vpi";
+:vpi_module "/usr/lib/x86_64-linux-gnu/ivl/va_math.vpi";
+S_0x5b0c1155fd50 .scope module, "fourbit_comp_tb" "fourbit_comp_tb" 2 2;
+ .timescale 0 0;
+v0x5b0c11576190_0 .var "a", 3 0;
+v0x5b0c11576270_0 .var "b", 3 0;
+v0x5b0c11576310_0 .net "eq", 0 0, L_0x5b0c115766f0;  1 drivers
+v0x5b0c11576410_0 .net "gt", 0 0, L_0x5b0c11576970;  1 drivers
+v0x5b0c115764e0_0 .net "lt", 0 0, L_0x5b0c11576cb0;  1 drivers
+S_0x5b0c1155fee0 .scope module, "fourbit_comp_inst" "fourbit_comp" 2 13, 3 1 0, S_0x5b0c1155fd50;
+ .timescale 0 0;
+    .port_info 0 /INPUT 4 "a";
+    .port_info 1 /INPUT 4 "b";
+    .port_info 2 /OUTPUT 1 "eq";
+    .port_info 3 /OUTPUT 1 "gt";
+    .port_info 4 /OUTPUT 1 "lt";
+v0x5b0c115600c0_0 .net *"_ivl_0", 0 0, L_0x5b0c11576580;  1 drivers
+L_0x770ece2d00a8 .functor BUFT 1, C4<1>, C4<0>, C4<0>, C4<0>;
+v0x5b0c11575600_0 .net/2u *"_ivl_10", 0 0, L_0x770ece2d00a8;  1 drivers
+L_0x770ece2d00f0 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v0x5b0c115756e0_0 .net/2u *"_ivl_12", 0 0, L_0x770ece2d00f0;  1 drivers
+v0x5b0c115757a0_0 .net *"_ivl_16", 0 0, L_0x5b0c11576b80;  1 drivers
+L_0x770ece2d0138 .functor BUFT 1, C4<1>, C4<0>, C4<0>, C4<0>;
+v0x5b0c11575860_0 .net/2u *"_ivl_18", 0 0, L_0x770ece2d0138;  1 drivers
+L_0x770ece2d0018 .functor BUFT 1, C4<1>, C4<0>, C4<0>, C4<0>;
+v0x5b0c11575990_0 .net/2u *"_ivl_2", 0 0, L_0x770ece2d0018;  1 drivers
+L_0x770ece2d0180 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v0x5b0c11575a70_0 .net/2u *"_ivl_20", 0 0, L_0x770ece2d0180;  1 drivers
+L_0x770ece2d0060 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v0x5b0c11575b50_0 .net/2u *"_ivl_4", 0 0, L_0x770ece2d0060;  1 drivers
+v0x5b0c11575c30_0 .net *"_ivl_8", 0 0, L_0x5b0c115768d0;  1 drivers
+v0x5b0c11575cf0_0 .net "a", 3 0, v0x5b0c11576190_0;  1 drivers
+v0x5b0c11575dd0_0 .net "b", 3 0, v0x5b0c11576270_0;  1 drivers
+v0x5b0c11575eb0_0 .net "eq", 0 0, L_0x5b0c115766f0;  alias, 1 drivers
+v0x5b0c11575f70_0 .net "gt", 0 0, L_0x5b0c11576970;  alias, 1 drivers
+v0x5b0c11576030_0 .net "lt", 0 0, L_0x5b0c11576cb0;  alias, 1 drivers
+L_0x5b0c11576580 .cmp/eq 4, v0x5b0c11576190_0, v0x5b0c11576270_0;
+L_0x5b0c115766f0 .functor MUXZ 1, L_0x770ece2d0060, L_0x770ece2d0018, L_0x5b0c11576580, C4<>;
+L_0x5b0c115768d0 .cmp/gt 4, v0x5b0c11576190_0, v0x5b0c11576270_0;
+L_0x5b0c11576970 .functor MUXZ 1, L_0x770ece2d00f0, L_0x770ece2d00a8, L_0x5b0c115768d0, C4<>;
+L_0x5b0c11576b80 .cmp/gt 4, v0x5b0c11576270_0, v0x5b0c11576190_0;
+L_0x5b0c11576cb0 .functor MUXZ 1, L_0x770ece2d0180, L_0x770ece2d0138, L_0x5b0c11576b80, C4<>;
+    .scope S_0x5b0c1155fd50;
+T_0 ;
+    %vpi_call 2 23 "$dumpfile", "fourbit_comp_waves.vcd" {0 0 0};
+    %vpi_call 2 24 "$dumpvars", 32'sb00000000000000000000000000000000, S_0x5b0c1155fd50 {0 0 0};
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x5b0c11576190_0, 0, 4;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x5b0c11576270_0, 0, 4;
+    %delay 10, 0;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x5b0c11576190_0, 0, 4;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x5b0c11576270_0, 0, 4;
+    %delay 10, 0;
+    %pushi/vec4 0, 0, 4;
+    %store/vec4 v0x5b0c11576190_0, 0, 4;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x5b0c11576270_0, 0, 4;
+    %delay 10, 0;
+    %pushi/vec4 10, 0, 4;
+    %store/vec4 v0x5b0c11576190_0, 0, 4;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x5b0c11576270_0, 0, 4;
+    %delay 10, 0;
+    %pushi/vec4 5, 0, 4;
+    %store/vec4 v0x5b0c11576190_0, 0, 4;
+    %pushi/vec4 10, 0, 4;
+    %store/vec4 v0x5b0c11576270_0, 0, 4;
+    %delay 10, 0;
+    %vpi_call 2 33 "$finish" {0 0 0};
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "fourbit_comp_tb.v";
+    "fourbit_comp.v";

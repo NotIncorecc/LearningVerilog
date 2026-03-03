@@ -1,0 +1,61 @@
+$date
+	Thu Feb  5 11:33:13 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module fourbit_comp_tb $end
+$var wire 1 ! lt $end
+$var wire 1 " gt $end
+$var wire 1 # eq $end
+$var reg 4 $ a [3:0] $end
+$var reg 4 % b [3:0] $end
+$scope module fourbit_comp_inst $end
+$var wire 4 & a [3:0] $end
+$var wire 4 ' b [3:0] $end
+$var wire 1 ! lt $end
+$var wire 1 " gt $end
+$var wire 1 # eq $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 '
+b0 &
+b0 %
+b0 $
+1#
+0"
+0!
+$end
+#10
+0#
+1"
+b1 $
+b1 &
+#20
+1!
+0"
+b1 %
+b1 '
+b0 $
+b0 &
+#30
+1"
+0!
+b101 %
+b101 '
+b1010 $
+b1010 &
+#40
+1!
+0"
+b1010 %
+b1010 '
+b101 $
+b101 &
+#50

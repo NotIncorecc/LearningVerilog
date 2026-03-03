@@ -1,0 +1,59 @@
+$date
+	Tue Feb 10 17:14:35 2026
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module adder_4bit_tb $end
+$var wire 4 ! Sum [3:0] $end
+$var wire 1 " Cout $end
+$var reg 4 # A [3:0] $end
+$var reg 4 $ B [3:0] $end
+$var reg 1 % Cin $end
+$scope module uut $end
+$var wire 4 & A [3:0] $end
+$var wire 4 ' B [3:0] $end
+$var wire 1 % Cin $end
+$var wire 4 ( Sum [3:0] $end
+$var wire 1 " Cout $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b101 (
+b11 '
+b10 &
+0%
+b11 $
+b10 #
+0"
+b101 !
+$end
+#10
+b1011 !
+b1011 (
+1%
+b101 $
+b101 '
+b101 #
+b101 &
+#20
+b0 !
+b0 (
+1"
+0%
+b1 $
+b1 '
+b1111 #
+b1111 &
+#30
+b1111 !
+b1111 (
+1%
+b1111 $
+b1111 '
+#40

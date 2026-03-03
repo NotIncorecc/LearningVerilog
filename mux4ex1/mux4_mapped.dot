@@ -1,0 +1,28 @@
+digraph "mux4x1_dataflow" {
+label="mux4x1_dataflow";
+rankdir="LR";
+remincross=true;
+n1 [ shape=octagon, label="i", color="black", fontcolor="black" ];
+n2 [ shape=octagon, label="s", color="black", fontcolor="black" ];
+n3 [ shape=octagon, label="y", color="black", fontcolor="black" ];
+c11 [ shape=record, label="{{<p4> A|<p5> B|<p6> C|<p7> D|<p8> S|<p9> T}|$77\n$_MUX4_|{<p10> Y}}" ];
+x0 [ shape=record, style=rounded, label="<s0> 0:0 - 0:0 " ];
+x0:e -> c11:p4:w [arrowhead=odiamond, arrowtail=odiamond, dir=both, color="black", label=""];
+x1 [ shape=record, style=rounded, label="<s0> 2:2 - 0:0 " ];
+x1:e -> c11:p5:w [arrowhead=odiamond, arrowtail=odiamond, dir=both, color="black", label=""];
+x2 [ shape=record, style=rounded, label="<s0> 1:1 - 0:0 " ];
+x2:e -> c11:p6:w [arrowhead=odiamond, arrowtail=odiamond, dir=both, color="black", label=""];
+x3 [ shape=record, style=rounded, label="<s0> 3:3 - 0:0 " ];
+x3:e -> c11:p7:w [arrowhead=odiamond, arrowtail=odiamond, dir=both, color="black", label=""];
+x4 [ shape=record, style=rounded, label="<s0> 1:1 - 0:0 " ];
+x4:e -> c11:p8:w [arrowhead=odiamond, arrowtail=odiamond, dir=both, color="black", label=""];
+x5 [ shape=record, style=rounded, label="<s0> 0:0 - 0:0 " ];
+x5:e -> c11:p9:w [arrowhead=odiamond, arrowtail=odiamond, dir=both, color="black", label=""];
+n1:e -> x0:s0:w [color="black", label=""];
+n1:e -> x1:s0:w [color="black", label=""];
+n1:e -> x2:s0:w [color="black", label=""];
+n1:e -> x3:s0:w [color="black", label=""];
+n2:e -> x4:s0:w [color="black", label=""];
+n2:e -> x5:s0:w [color="black", label=""];
+c11:p10:e -> n3:w [color="black", label=""];
+}

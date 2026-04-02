@@ -1,0 +1,17 @@
+digraph "sipo_4bit" {
+label="sipo_4bit";
+rankdir="LR";
+remincross=true;
+n1 [ shape=octagon, label="clk", color="black", fontcolor="black" ];
+n2 [ shape=octagon, label="parallel_out", color="black", fontcolor="black" ];
+n3 [ shape=octagon, label="rst", color="black", fontcolor="black" ];
+n4 [ shape=octagon, label="serial_in", color="black", fontcolor="black" ];
+c9 [ shape=record, label="{{<p5> ARST|<p6> CLK|<p7> D}|$2\n$adff|{<p8> Q}}",  ];
+x0 [ shape=record, style=rounded, label="<s1> 2:0 - 3:1 |<s0> 0:0 - 0:0 ", color="black", fontcolor="black" ];
+x0:e -> c9:p7:w [arrowhead=odiamond, arrowtail=odiamond, dir=both, color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n1:e -> c9:p6:w [color="black", fontcolor="black", label=""];
+c9:p8:e -> n2:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n2:e -> x0:s1:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n3:e -> c9:p5:w [color="black", fontcolor="black", label=""];
+n4:e -> x0:s0:w [color="black", fontcolor="black", label=""];
+}

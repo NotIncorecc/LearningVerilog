@@ -22,6 +22,8 @@ MODULES=(
     "encoder|encoder.v|encoder_tb.v|encoder_8to3"
     "decoder|decoder.v|decoder_tb.v|decoder_3to8"
     "flip_flop|flip_flop.v|flip_flop_tb.v|d_flip_flop"
+    "sevensegment|sevensegment.v|sevensegment_tb.v|bcd_to_7seg"
+    "sipo_register|sipo_register.v|sipo_register_tb.v|sipo_4bit"
 )
 
 process_module() {

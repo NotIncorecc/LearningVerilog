@@ -49,3 +49,23 @@ gtkwave dump.vcd &
 yosys -p "read_verilog design.v; synth_ice40 -json output.json"
 yosys -p "read_json output.json; show"
 ```
+
+Everything is automated! Here's what was created:
+
+### New Files
+- **`automate.sh`** — Single command to compile, simulate, and generate all images
+- **`generate_waveform.py`** — Python VCD→PNG renderer (matplotlib, dark theme)
+
+### Generated Outputs (per module)
+| File | Source |
+|---|---|
+| `synthesis.png` | Yosys → Graphviz circuit schematic |
+| `waveform.png` | Python/matplotlib VCD waveform plot |
+
+### Usage
+```bash
+./automate.sh              # Run all 4 modules
+./automate.sh flip_flop    # Run a specific module
+```
+
+To add new experiments, add an entry to the `MODULES` array in `automate.sh`. Check the walkthrough for sample output images.

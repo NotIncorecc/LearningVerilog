@@ -12,6 +12,13 @@ This documentation describes the process to compile Verilog code, generate wavef
     - `-o output.vvp`: Output executable file
     - Compiles Verilog source files into VVP format
 
+    it may not work sometimes so use
+    ```bash
+    iverilog -g2012 -o output.vvp alu_4bit.v alu_4bit_tb.v
+vvp output.vvp
+    ```
+    - this command will run the alu code if you go run this in the appropriate folder
+
 2. **Run Simulation with VVP**
     ```bash
     vvp output.vvp -vcd

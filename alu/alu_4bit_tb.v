@@ -71,26 +71,26 @@ module alu_4bit_tb;
         // ==================== LOGICAL OPERATIONS ====================
         $display("\n\n========== LOGICAL OPERATIONS (select[3:2] = 01) ==========");
 
-        // Test 9: AND (select = 0100)
-        $display("\n--- Test 9: AND (select = 4'b0100) ---");
-        test_operation(4'b1010, 4'b0101, 4'b0100, 1'b0, "1010 AND 0101 (should be 0000)");
-        test_operation(4'b1111, 4'b0101, 4'b0100, 1'b0, "1111 AND 0101 (should be 0101)");
+        // Test 9: AND (select = 1001)
+        $display("\n--- Test 9: AND (select = 4'b1001) ---");
+        test_operation(4'b1010, 4'b0101, 4'b1001, 1'b0, "1010 AND 0101 (should be 0000)");
+        test_operation(4'b1111, 4'b0101, 4'b1001, 1'b0, "1111 AND 0101 (should be 0101)");
 
-        // Test 10: OR (select = 0101)
-        $display("\n--- Test 10: OR (select = 4'b0101) ---");
-        test_operation(4'b1010, 4'b0101, 4'b0101, 1'b0, "1010 OR 0101 (should be 1111)");
-        test_operation(4'b0000, 4'b0100, 4'b0101, 1'b0, "0000 OR 0100 (should be 0100)");
+        // Test 10: OR (select = 1010)
+        $display("\n--- Test 10: OR (select = 4'b1010) ---");
+        test_operation(4'b1010, 4'b0101, 4'b1010, 1'b0, "1010 OR 0101 (should be 1111)");
+        test_operation(4'b0000, 4'b0100, 4'b1010, 1'b0, "0000 OR 0100 (should be 0100)");
 
-        // Test 11: XOR (select = 0110)
-        $display("\n--- Test 11: XOR (select = 4'b0110) ---");
-        test_operation(4'b1010, 4'b0101, 4'b0110, 1'b0, "1010 XOR 0101 (should be 1111)");
-        test_operation(4'b1111, 4'b1111, 4'b0110, 1'b0, "1111 XOR 1111 (should be 0000)");
+        // Test 11: XOR (select = 1011)
+        $display("\n--- Test 11: XOR (select = 4'b1011) ---");
+        test_operation(4'b1010, 4'b0101, 4'b1011, 1'b0, "1010 XOR 0101 (should be 1111)");
+        test_operation(4'b1111, 4'b1111, 4'b1011, 1'b0, "1111 XOR 1111 (should be 0000)");
 
-        // Test 12: NOT A (select = 0111)
-        $display("\n--- Test 12: NOT A (select = 4'b0111) ---");
-        test_operation(4'b1010, 4'b0000, 4'b0111, 1'b0, "NOT 1010 (should be 0101)");
-        test_operation(4'b0000, 4'b0000, 4'b0111, 1'b0, "NOT 0000 (should be 1111)");
-        test_operation(4'b1111, 4'b0000, 4'b0111, 1'b0, "NOT 1111 (should be 0000)");
+        // Test 12: NOT A (select = 1101)
+        $display("\n--- Test 12: NOT A (select = 4'b1101) ---");
+        test_operation(4'b1010, 4'b0000, 4'b1101, 1'b0, "NOT 1010 (should be 0101)");
+        test_operation(4'b0000, 4'b0000, 4'b1101, 1'b0, "NOT 0000 (should be 1111)");
+        test_operation(4'b1111, 4'b0000, 4'b1101, 1'b0, "NOT 1111 (should be 0000)");
 
         // ==================== SHIFT OPERATIONS ====================
         $display("\n\n========== SHIFT OPERATIONS ====================");

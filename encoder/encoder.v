@@ -1,22 +1,14 @@
-// 8:3 Binary Encoder
-// Assumes only one input is active at a time (one-hot)
 module encoder_8to3 (
-    input  [7:0] d,      // 8-bit one-hot input
-    output reg [2:0] y   // 3-bit encoded output
+    input  [7:0] d,
+    output [2:0] y
 );
+    // y[0] is high if d[1], d[3], d[5], or d[7] is high
+    assign y[0] = d[1] | d[3] | d[5] | d[7];
 
-    always @(*) begin
-        case (d)
-            8'b0000_0001: y = 3'd0;
-            8'b0000_0010: y = 3'd1;
-            8'b0000_0100: y = 3'd2;
-            8'b0000_1000: y = 3'd3;
-            8'b0001_0000: y = 3'd4;
-            8'b0010_0000: y = 3'd5;
-            8'b0100_0000: y = 3'd6;
-            8'b1000_0000: y = 3'd7;
-            default:      y = 3'bxxx;
-        endcase
-    end
+    // y[1] is high if d[2], d[3], d[6], or d[7] is high
+    assign y[1] = d[2] | d[3] | d[6] | d[7];
+
+    // y[2] is high if d[4], d[5], d[6], or d[7] is high
+    assign y[2] = d[4] | d[5] | d[6] | d[7];
 
 endmodule

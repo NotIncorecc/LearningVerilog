@@ -24,6 +24,10 @@ MODULES=(
     "flip_flop|flip_flop.v|flip_flop_tb.v|d_flip_flop"
     "sevensegment|sevensegment.v|sevensegment_tb.v|bcd_to_7seg"
     "sipo_register|sipo_register.v|sipo_register_tb.v|sipo_4bit"
+    "d_flip_flop|d_flip_flop.v|d_flip_flop_tb.v|d_flip_flop"
+    "jk_flip_flop|jk_flip_flop.v|jk_flip_flop_tb.v|jk_flip_flop"
+    "alu|alu.v|alu_tb.v|alu_4bit"
+    "pipo_register|pipo_register.v|pipo_register_tb.v|pipo_register"
 )
 
 process_module() {

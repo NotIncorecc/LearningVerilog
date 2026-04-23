@@ -1,0 +1,16 @@
+digraph "pipo_register" {
+label="pipo_register";
+rankdir="LR";
+remincross=true;
+n1 [ shape=octagon, label="clk", color="black", fontcolor="black" ];
+n2 [ shape=octagon, label="d", color="black", fontcolor="black" ];
+n3 [ shape=octagon, label="load", color="black", fontcolor="black" ];
+n4 [ shape=octagon, label="q", color="black", fontcolor="black" ];
+n5 [ shape=octagon, label="rst", color="black", fontcolor="black" ];
+c11 [ shape=record, label="{{<p6> CLK|<p7> D|<p8> EN|<p9> SRST}|$9\n$sdffe|{<p10> Q}}",  ];
+n1:e -> c11:p6:w [color="black", fontcolor="black", label=""];
+n2:e -> c11:p7:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n3:e -> c11:p8:w [color="black", fontcolor="black", label=""];
+c11:p10:e -> n4:w [color="black", fontcolor="black", style="setlinewidth(3)", label=""];
+n5:e -> c11:p9:w [color="black", fontcolor="black", label=""];
+}

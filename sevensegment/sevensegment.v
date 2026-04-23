@@ -17,7 +17,7 @@ module bcd_to_7seg (
             4'd7: seg = 7'b111_1000;  // 7
             4'd8: seg = 7'b000_0000;  // 8
             4'd9: seg = 7'b001_0000;  // 9
-            default: seg = 7'b111_1111;  // Blank for invalid BCD
+            default: seg = 7'bxxxxxxx; // "Don't Care" optimization
         endcase
     end
 

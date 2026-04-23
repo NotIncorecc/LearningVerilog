@@ -7,6 +7,15 @@ module alu_4bit_tb;
     reg cin;
     wire [3:0] result;
     wire carry;
+    reg [4:0] expected;
+
+    integer total_tests;
+    integer passed_tests;
+    integer failed_tests;
+    integer i;
+
+    reg [3:0] vec_a [0:5];
+    reg [3:0] vec_b [0:5];
 
     // Instantiate the ALU
     alu_4bit dut (
@@ -21,125 +30,125 @@ module alu_4bit_tb;
     initial begin
         $dumpfile("alu_waves.vcd");
         $dumpvars(0, alu_4bit_tb);
+        total_tests = 0;
+        passed_tests = 0;
+        failed_tests = 0;
 
-        // Test heading
-        $display("\n================== ALU 4-bit Testbench ==================");
-        $display("Testing all ALU operations: Arithmetic, Logical, Shifts\n");
+        vec_a[0] = 4'h0; vec_b[0] = 4'h0;
+        vec_a[1] = 4'h1; vec_b[1] = 4'h7;
+        vec_a[2] = 4'h5; vec_b[2] = 4'h3;
+        vec_a[3] = 4'h8; vec_b[3] = 4'h4;
+        vec_a[4] = 4'hF; vec_b[4] = 4'h1;
+        vec_a[5] = 4'hA; vec_b[5] = 4'h5;
 
-        // ==================== ARITHMETIC OPERATIONS ====================
-        $display("========== ARITHMETIC OPERATIONS (select[3:2] = 00) ==========");
+        $display("\n=== Checking ALU against provided function table ===");
 
-        // Test 1: Transfer A (select = 0000, cin = 0)
-        $display("\n--- Test 1: Transfer A (select = 4'b0000, cin = 0) ---");
-        test_operation(4'b0001, 4'b0101, 4'b0000, 1'b0, "Transfer A (should be 0001)");
+        // Arithmetic rows: 0000..0111 with cin as table input
+        for (i = 0; i < 6; i = i + 1) begin
+            run_and_check(vec_a[i], vec_b[i], 4'b0000, 1'b0, "0000: F=A");
+            run_and_check(vec_a[i], vec_b[i], 4'b0000, 1'b1, "0000: F=A+1");
+            run_and_check(vec_a[i], vec_b[i], 4'b0001, 1'b0, "0001: F=A+B");
+            run_and_check(vec_a[i], vec_b[i], 4'b0001, 1'b1, "0001: F=A+B+1");
+            run_and_check(vec_a[i], vec_b[i], 4'b0010, 1'b0, "0010: F=A+~B");
+            run_and_check(vec_a[i], vec_b[i], 4'b0010, 1'b1, "0010: F=A+~B+1");
+            run_and_check(vec_a[i], vec_b[i], 4'b0011, 1'b0, "0011: F=A-1");
+            run_and_check(vec_a[i], vec_b[i], 4'b0011, 1'b1, "0011: F=A");
+        end
 
-        // Test 2: A + 1 (select = 0001, cin = 1)
-        $display("\n--- Test 2: A + 1 (select = 4'b0001, cin = 1) ---");
-        test_operation(4'b0101, 4'b0000, 4'b0001, 1'b1, "A + 1 (should be 0110)");
-        test_operation(4'b1111, 4'b0000, 4'b0001, 1'b1, "A + 1 with overflow (should be 0000, carry=1)");
+        // Logical rows: 01xx, cin is don't-care in table, test both values.
+        for (i = 0; i < 6; i = i + 1) begin
+            run_and_check(vec_a[i], vec_b[i], 4'b0100, 1'b0, "0100x: F=A&B");
+            run_and_check(vec_a[i], vec_b[i], 4'b0100, 1'b1, "0100x: F=A&B");
+            run_and_check(vec_a[i], vec_b[i], 4'b0101, 1'b0, "0101x: F=A|B");
+            run_and_check(vec_a[i], vec_b[i], 4'b0101, 1'b1, "0101x: F=A|B");
+            run_and_check(vec_a[i], vec_b[i], 4'b0110, 1'b0, "0110x: F=A^B");
+            run_and_check(vec_a[i], vec_b[i], 4'b0110, 1'b1, "0110x: F=A^B");
+            run_and_check(vec_a[i], vec_b[i], 4'b0111, 1'b0, "0111x: F=~A");
+            run_and_check(vec_a[i], vec_b[i], 4'b0111, 1'b1, "0111x: F=~A");
+        end
 
-        // Test 3: A + B (select = 0010, cin = 0)
-        $display("\n--- Test 3: A + B (select = 4'b0010, cin = 0) ---");
-        test_operation(4'b0011, 4'b0010, 4'b0010, 1'b0, "3 + 2 (should be 0101)");
-        test_operation(4'b1000, 4'b0100, 4'b0010, 1'b0, "8 + 4 (should be 1100)");
-        test_operation(4'b1111, 4'b0001, 4'b0010, 1'b0, "15 + 1 with overflow (should be 0000, carry=1)");
+        // Shift rows: 10xx and 11xx, both lower bits and cin are don't-care.
+        for (i = 0; i < 6; i = i + 1) begin
+            run_and_check(vec_a[i], vec_b[i], 4'b1000, 1'b0, "10xxx: F=shr A");
+            run_and_check(vec_a[i], vec_b[i], 4'b1001, 1'b1, "10xxx: F=shr A");
+            run_and_check(vec_a[i], vec_b[i], 4'b1010, 1'b0, "10xxx: F=shr A");
+            run_and_check(vec_a[i], vec_b[i], 4'b1011, 1'b1, "10xxx: F=shr A");
 
-        // Test 4: A + B + 1 (select = 0011, cin = 1)
-        $display("\n--- Test 4: A + B + 1 (select = 4'b0011, cin = 1) ---");
-        test_operation(4'b0010, 4'b0011, 4'b0011, 1'b1, "2 + 3 + 1 (should be 0110)");
-        test_operation(4'b1111, 4'b1111, 4'b0011, 1'b1, "15 + 15 + 1 with overflow (should be 1111, carry=1)");
+            run_and_check(vec_a[i], vec_b[i], 4'b1100, 1'b0, "11xxx: F=shl A");
+            run_and_check(vec_a[i], vec_b[i], 4'b1101, 1'b1, "11xxx: F=shl A");
+            run_and_check(vec_a[i], vec_b[i], 4'b1110, 1'b0, "11xxx: F=shl A");
+            run_and_check(vec_a[i], vec_b[i], 4'b1111, 1'b1, "11xxx: F=shl A");
+        end
 
-        // Test 5: A - B (A + ~B, select = 0100, cin = 0)
-        $display("\n--- Test 5: A - B (A + ~B, select = 4'b0100, cin = 0) ---");
-        test_operation(4'b0101, 4'b0011, 4'b0100, 1'b0, "5 - 3 (should be 0010)");
-        test_operation(4'b0011, 4'b0101, 4'b0100, 1'b0, "3 - 5 (should be 1110)");
+        $display("\nTotal: %0d, Passed: %0d, Failed: %0d", total_tests, passed_tests, failed_tests);
+        if (failed_tests == 0)
+            $display("ALU matches the provided table.");
+        else
+            $display("ALU does NOT exactly match the provided table.");
 
-        // Test 6: A - B (A + ~B + 1, select = 0101, cin = 1)
-        $display("\n--- Test 6: A - B (A + ~B + 1, select = 4'b0101, cin = 1) ---");
-        test_operation(4'b1000, 4'b0011, 4'b0101, 1'b1, "8 - 3 (should be 0101)");
-        test_operation(4'b0101, 4'b1000, 4'b0101, 1'b1, "5 - 8 (should be 1101)");
-
-        // Test 7: A - 1 (select = 0110, cin = 0)
-        $display("\n--- Test 7: A - 1 (select = 4'b0110, cin = 0) ---");
-        test_operation(4'b0101, 4'b0000, 4'b0110, 1'b0, "5 - 1 (should be 0100)");
-        test_operation(4'b0000, 4'b0000, 4'b0110, 1'b0, "0 - 1 (should be 1111, carry=1)");
-
-        // Test 8: Transfer A (select = 0111, cin = 1)
-        $display("\n--- Test 8: Transfer A (select = 4'b0111, cin = 1) ---");
-        test_operation(4'b1010, 4'b0101, 4'b0111, 1'b1, "Transfer A (should be 1010)");
-
-        // ==================== LOGICAL OPERATIONS ====================
-        $display("\n\n========== LOGICAL OPERATIONS (select[3:2] = 01) ==========");
-
-        // Test 9: AND (select = 1001)
-        $display("\n--- Test 9: AND (select = 4'b1001) ---");
-        test_operation(4'b1010, 4'b0101, 4'b1001, 1'b0, "1010 AND 0101 (should be 0000)");
-        test_operation(4'b1111, 4'b0101, 4'b1001, 1'b0, "1111 AND 0101 (should be 0101)");
-
-        // Test 10: OR (select = 1010)
-        $display("\n--- Test 10: OR (select = 4'b1010) ---");
-        test_operation(4'b1010, 4'b0101, 4'b1010, 1'b0, "1010 OR 0101 (should be 1111)");
-        test_operation(4'b0000, 4'b0100, 4'b1010, 1'b0, "0000 OR 0100 (should be 0100)");
-
-        // Test 11: XOR (select = 1011)
-        $display("\n--- Test 11: XOR (select = 4'b1011) ---");
-        test_operation(4'b1010, 4'b0101, 4'b1011, 1'b0, "1010 XOR 0101 (should be 1111)");
-        test_operation(4'b1111, 4'b1111, 4'b1011, 1'b0, "1111 XOR 1111 (should be 0000)");
-
-        // Test 12: NOT A (select = 1101)
-        $display("\n--- Test 12: NOT A (select = 4'b1101) ---");
-        test_operation(4'b1010, 4'b0000, 4'b1101, 1'b0, "NOT 1010 (should be 0101)");
-        test_operation(4'b0000, 4'b0000, 4'b1101, 1'b0, "NOT 0000 (should be 1111)");
-        test_operation(4'b1111, 4'b0000, 4'b1101, 1'b0, "NOT 1111 (should be 0000)");
-
-        // ==================== SHIFT OPERATIONS ====================
-        $display("\n\n========== SHIFT OPERATIONS ====================");
-
-        // Test 13: Shift Right (select[3:2] = 10)
-        $display("\n--- Test 13: Shift Right (select[3:2] = 10) ---");
-        test_operation(4'b1101, 4'b0000, 4'b1000, 1'b0, "Shift Right: 1101 (should be 1110, right bit in)");
-        test_operation(4'b0101, 4'b0000, 4'b1000, 1'b0, "Shift Right: 0101 (should be 0010, right bit in)");
-
-        // Test 14: Shift Left (select[3:2] = 11)
-        $display("\n--- Test 14: Shift Left (select[3:2] = 11) ---");
-        test_operation(4'b1101, 4'b0000, 4'b1100, 1'b0, "Shift Left: 1101 (should be 1011, left bit in)");
-        test_operation(4'b0101, 4'b0000, 4'b1100, 1'b0, "Shift Left: 0101 (should be 1010, left bit in)");
-
-        // ==================== EDGE CASES ====================
-        $display("\n\n========== EDGE CASES AND COMPREHENSIVE TESTS ===========");
-
-        // Test 15: All zeros
-        $display("\n--- Test 15: All zeros ---");
-        test_operation(4'b0000, 4'b0000, 4'b0010, 1'b0, "0 + 0 (should be 0000)");
-
-        // Test 16: All ones
-        $display("\n--- Test 16: All ones ---");
-        test_operation(4'b1111, 4'b1111, 4'b0010, 1'b0, "15 + 15 (should be 1110, carry=1)");
-
-        // Test 17: Maximum value operations
-        $display("\n--- Test 17: Maximum value operations ---");
-        test_operation(4'b1111, 4'b0001, 4'b0010, 1'b0, "15 + 1 (should be 0000, carry=1)");
-
-        // Test 18: Carry propagation with multiple operations
-        $display("\n--- Test 18: Carry propagation ---");
-        test_operation(4'b0111, 4'b0001, 4'b0010, 1'b0, "7 + 1 (should be 1000, no carry)");
-        test_operation(4'b1111, 4'b0000, 4'b0001, 1'b1, "15 + 1 (should be 0000, carry=1)");
-
-        $display("\n\n================== Testbench Complete ==================\n");
         $finish;
     end
 
-    // Task to test an operation
-    task test_operation(input [3:0] in_a, input [3:0] in_b, input [3:0] sel, input in_cin, input string description);
+    task run_and_check(
+        input [3:0] in_a,
+        input [3:0] in_b,
+        input [3:0] sel,
+        input in_cin,
+        input [8*24-1:0] label
+    );
         begin
             a = in_a;
             b = in_b;
             select = sel;
             cin = in_cin;
-            #10; // Wait for result to settle
-            $display("Inputs: A=%b (%0d), B=%b (%0d), Select=%b, Cin=%b | Result=%b (%0d), Carry=%b | %s",
-                     a, a, b, b, select, cin, result, result, carry, description);
+            #1;
+
+            expected = expected_from_table(in_a, in_b, sel, in_cin);
+            total_tests = total_tests + 1;
+
+            if ({carry, result} === expected) begin
+                passed_tests = passed_tests + 1;
+            end else begin
+                failed_tests = failed_tests + 1;
+                $display("FAIL %0d | %s | A=%b B=%b S=%b Cin=%b | exp={%b,%b} got={%b,%b}",
+                         total_tests, label, in_a, in_b, sel, in_cin,
+                         expected[4], expected[3:0], carry, result);
+            end
         end
     endtask
+
+    function [4:0] expected_from_table(
+        input [3:0] in_a,
+        input [3:0] in_b,
+        input [3:0] sel,
+        input in_cin
+    );
+        reg [4:0] temp;
+        begin
+            temp = 5'b0;
+            case (sel[3:2])
+                2'b00: begin
+                    case (sel[1:0])
+                        2'b00: temp = {1'b0, in_a} + in_cin;
+                        2'b01: temp = {1'b0, in_a} + {1'b0, in_b} + in_cin;
+                        2'b10: temp = {1'b0, in_a} + {1'b0, ~in_b} + in_cin;
+                        2'b11: temp = {1'b0, in_a} + 5'b0_1111 + in_cin;
+                    endcase
+                end
+                2'b01: begin
+                    case (sel[1:0])
+                        2'b00: temp = {1'b0, (in_a & in_b)};
+                        2'b01: temp = {1'b0, (in_a | in_b)};
+                        2'b10: temp = {1'b0, (in_a ^ in_b)};
+                        2'b11: temp = {1'b0, (~in_a)};
+                    endcase
+                end
+                2'b10: temp = {1'b0, (in_a >> 1)};
+                2'b11: temp = {1'b0, (in_a << 1)};
+            endcase
+
+            expected_from_table = temp;
+        end
+    endfunction
 
 endmodule

@@ -41,6 +41,11 @@ This documentation describes the process to compile Verilog code, generate wavef
     - `yosys`: Open-source synthesis tool
     - Converts RTL to netlist/schematic representation
 
+    for a cleaner synthesis, using example for alu
+    ```bash
+    yosys -p 'read_verilog alu_4bit.v; hierarchy -check -top alu_4bit; synth -top alu_4bit; abc; clean; stat; write_verilog alu_4bit_synth.v; show -format dot -prefix alu_4bit_synth -viewer /bin/true' && dot -Tpng alu_4bit_synth.dot -o alu_4bit_synth.png
+    ``` 
+
 2. **View Schematic**
     ```bash
     yosys -p "read_json output.json; show"
